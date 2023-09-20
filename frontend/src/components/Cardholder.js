@@ -5,8 +5,11 @@ const statisticStyle = {
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",  // 2 equal-width columns
     gap: "2px",  // adjust for desired space between cards
-    gridAutoRows: "auto"
+    gridAutoRows: "auto", 
+
 };
+
+
 
 
 const CardHolder = ({key, cardProp}) => {
