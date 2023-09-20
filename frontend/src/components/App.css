@@ -1,0 +1,7 @@
+    .statistic {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 3 equal-width columns */
+        gap: 2px; /* adjust for desired space between cards */
+        grid-auto-rows: auto;
+    }
+
