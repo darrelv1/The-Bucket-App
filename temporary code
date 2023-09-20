@@ -1,0 +1,13 @@
+ const sampleAPIcall = (event) => {
+        event.preventDefault();
+        const requestOptions = {
+            method: 'GET',
+            headers: { 
+                'Content-Type' : 'application/json'
+             }
+        }
+        fetch("http://localhost:8000/account/getAllul", requestOptions)
+        .then(response => response.json)
+        .then(data => console.log(data))
+
+    }
