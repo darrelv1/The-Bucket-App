@@ -1,55 +1,49 @@
-import React from 'react';
-import {ReadOutlined} from 'antd'
+import { useState, useEffect } from "react";
+import React from "react";
+import { ReadOutlined } from "antd";
+import axios from "axios";
+
+<ReadOutlined />;
+
+const Card = ({ label, icon, statistic }) => {
 
 
-<ReadOutlined />
+  const cardStyles = {
+    width: "500px",
+    height: "400px",
+    border: "1px solid #e0e0e0",
+    borderRadius: "8px",
 
-const Card = ({ label, icon, statistic })  => {
+    overflow: "hidden",
+    padding: "10px",
+  };
 
+  const labelSectionStyles = {
+    height: "50%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "16px",
+    backgroundColor: "#f1f1f1",
+  };
 
-        
-        const cardStyles = {
-          width: '500px',
-          height: '400px',
-          border: '1px solid #e0e0e0',
-          borderRadius: '8px',
-          
-          overflow: 'hidden',
-          padding: '10px'
-          
-          
-         
-        };
+  const iconStyles = {
+    width: "24px",
+    height: "24px",
+  };
 
-     
-    
-        const labelSectionStyles = {
-          height: '50%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '16px',
-          backgroundColor: "#f1f1f1",
-        };
-      
-        const iconStyles = {
-          width: '24px',
-          height: '24px',
-        };
-        
-        const spanStyles=  {
-
-            
-  fontFamily:  '"Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif',
-  fontSize: '50px',
-  padding: '80px 50px',
-  textAlign: 'center',
-  textTransform: 'uppercase',
-  textRendering: 'optimizeLegibility',
-color: '#e0dfdc',
-  backgroundColor: '#333',
-  letterSpacing: '.1em',
-  textShadow: `
+  const spanStyles = {
+    fontFamily:
+      '"Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif',
+    fontSize: "50px",
+    padding: "80px 50px",
+    textAlign: "center",
+    textTransform: "uppercase",
+    textRendering: "optimizeLegibility",
+    color: "#e0dfdc",
+    backgroundColor: "#333",
+    letterSpacing: ".1em",
+    textShadow: `
     0 -1px 0 #fff, 
     0 1px 0 #2e2e2e, 
     0 2px 0 #2c2c2c, 
@@ -68,35 +62,27 @@ color: '#e0dfdc',
     0 15px 0 #121212, 
     0 22px 30px rgba(0, 0, 0, 0.9)
   `,
+  };
 
-        }
-      
-        const statSectionStyles = {
-          height: '75%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: '60px',
-          fontWeight: 'bold',
-        };
-    return (
-        <div style={cardStyles}>
-          <div style={labelSectionStyles}>
-            <span style={spanStyles}>{label}</span>
-            <span >
-              <img src={icon} alt="icon" style={iconStyles} />
-            </span>
-          </div>
-          <div style={statSectionStyles}>
-            {statistic}
-          </div>
-        </div>
-      );
-    
-
-
-
-
-}
+  const statSectionStyles = {
+    height: "75%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: "60px",
+    fontWeight: "bold",
+  };
+  return (
+    <div style={cardStyles}>
+      <div style={labelSectionStyles}>
+        <span style={spanStyles}>{label}</span>
+        <span>
+          <img src={icon} alt="icon" style={iconStyles} />
+        </span>
+      </div>
+      <div style={statSectionStyles}>{statistic}</div>
+    </div>
+  );
+};
 
 export default Card;

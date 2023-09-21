@@ -20,7 +20,6 @@ return (
 
 </div>
 );
-
 }
 
 export default Dashboard; 

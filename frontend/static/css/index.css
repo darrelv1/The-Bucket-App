@@ -5,6 +5,7 @@ html, body {
     height: 100%;
     margin: 0; 
     padding: 0; 
+    background-color: #001133;
 }
 
 #main {
@@ -18,4 +19,13 @@ html, body {
     position: fixed; 
     width: 100%; 
     display: flex;
+}
+
+#mainTitle {
+    font-size: 75px;
+    text-align: center;
+    text-transform: 'uppercase';
+    text-rendering: 'optimizeLegibility';
+    color:#e0dfdc;
+
 }

@@ -40,7 +40,8 @@ const LayoutComponent = ({setUser, activeUser}) => {
     }
 
     let listing = []
-
+    
+    
 
     const  [items, setItems] = useState([
       getItem({label: 'Dashboard', key: '1', icon: <PieChartOutlined />, to:"/"}),
@@ -99,6 +100,7 @@ const LayoutComponent = ({setUser, activeUser}) => {
         <Layout
         style={{
           minHeight: '100vh',
+         
         }}
       >
         <Sider 
@@ -146,6 +148,7 @@ const LayoutComponent = ({setUser, activeUser}) => {
                 padding: 24,
                 minHeight: 100,
                 background: colorBgContainer,
+  
               }}
             >
               
