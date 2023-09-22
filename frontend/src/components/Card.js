@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import React from "react";
-import { ReadOutlined } from "antd";
+
 import axios from "axios";
 
-<ReadOutlined />;
+
 
 const Card = ({ label, icon, statistic }) => {
 
@@ -28,15 +28,15 @@ const Card = ({ label, icon, statistic }) => {
   };
 
   const iconStyles = {
-    width: "24px",
-    height: "24px",
+    width: "60",
+    height: "100px",
   };
 
   const spanStyles = {
     fontFamily:
       '"Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif',
-    fontSize: "50px",
-    padding: "80px 50px",
+    fontSize: "20px",
+    padding: "15px 10px",
     textAlign: "center",
     textTransform: "uppercase",
     textRendering: "optimizeLegibility",
@@ -69,18 +69,18 @@ const Card = ({ label, icon, statistic }) => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "60px",
+    fontSize: "80px",
     fontWeight: "bold",
   };
   return (
-    <div style={cardStyles}>
-      <div style={labelSectionStyles}>
-        <span style={spanStyles}>{label}</span>
-        <span>
-          <img src={icon} alt="icon" style={iconStyles} />
-        </span>
+    <div className="actualCard" style={cardStyles}>
+      <div className="labelNicon" style={labelSectionStyles}>
+        <span className="justLabel" style={spanStyles}>{label}</span>
+        <div className="icon" style={iconStyles}>
+          { icon}
+        </div>
       </div>
-      <div style={statSectionStyles}>{statistic}</div>
+      <div style={statSectionStyles}>{statistic} </div>
     </div>
   );
 };

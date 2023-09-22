@@ -6,12 +6,12 @@ import Card from '../components/Card'
 const Dashboard = ({body, header, footer})=>{
 
     const listofCard = [        
-                    "Bucket Total",
-                    "All Expenses",
-                    "Current Floating Balance",
-                    "Floating Balance",
-                    "# of Contributions",
-                    "Current Floating Balances"
+        'Bucket Total',
+        'Remaining Expense Amount',
+        'Current Floating Balance',
+        'Floating Balance',
+        'Number of Contributions',
+        'Total Contrubutions',
     ]
 
 return (

@@ -2,6 +2,17 @@ import React from 'react'
 import Card from './Card'
 import { useState, useEffect } from "react";
 
+import { 
+    ReadOutlined,
+    CreditCardOutlined,
+    MehOutlined,
+    ImportOutlined,
+    HeartOutlined,
+  } from '@ant-design/icons';
+
+ 
+
+
 
 const statisticStyle = {
   display: 'grid',
@@ -18,6 +29,15 @@ const CardHolder = ({ key, cardProp }) => {
     'Floating Balance': 0.0,
     'Number of Contributions': 0,
     'Total Contrubutions': 0
+  })
+
+  const [cardIcons, setcardIcons] = useState({
+    'Bucket Total': <CreditCardOutlined/> ,
+    'Remaining Expense Amount': <MehOutlined/>,
+    'Current Floating Balance': <ImportOutlined/>,
+    'Floating Balance': <HeartOutlined/>,
+    'Number of Contributions': <ReadOutlined/>,
+    'Total Contrubutions': <HeartOutlined/>
   })
 
   /**
@@ -60,7 +80,7 @@ const CardHolder = ({ key, cardProp }) => {
     <div>
       <div className='statistic' style={statisticStyle} id={key}>
         {cardProp.map(eachCard => {
-          return <Card className='card' label={eachCard} />
+          return <Card className='card' id={eachCard} label={eachCard} statistic={figures[eachCard]} icon={cardIcons[eachCard]}/>
         })}
       </div>
     </div>

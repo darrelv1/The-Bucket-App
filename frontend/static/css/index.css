@@ -29,3 +29,8 @@ html, body {
     color:#e0dfdc;
 
 }
+
+div .icon svg {
+    width: 6em;
+    height:6em;
+}
