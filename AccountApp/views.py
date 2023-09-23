@@ -7,7 +7,8 @@ from django.db.models import ManyToOneRel
 from django.apps import apps
 from functools import reduce
 #Models
-from .models import Ledger, userLedger1, userLedger2, userLedger3, AppLedger, UserProfile, Expenses
+from .models import (Ledger, userLedger1, userLedger2, userLedger3, AppLedger,
+                     UserProfile, Expenses)
 #Custome Built Serializers
 from .serializers import (
                          AccountSerializer
@@ -51,6 +52,7 @@ from django.core.serializers import serialize
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from TheBucketObject.bucket import Buckets
 
 import json
 
@@ -732,7 +734,8 @@ ALL UPDATE REQUESTS
 class billClass(APIView):
     serializer_class = Bills_Serializer
 
-    def get(self): 
+    def get(self):
+        all_expenses = Expenses.objects.all()
         return Response(Bills_Serializer(Expenses.objects.all(), many=True).data,status=status.HTTP_202_ACCEPTED)
     
     def post(self, request):

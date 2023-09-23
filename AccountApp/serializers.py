@@ -1,7 +1,8 @@
 from rest_framework import serializers 
 from .models import Ledger, userLedger1, userLedger2, userLedger3, UserProfile, Expenses
 #CRUD plugins:
-
+#Object Plugins:
+from .TheBucketObject.bucket import Buckets
 """
 ********************************
 ALL LEDGER SERIALIZERS
@@ -17,11 +18,11 @@ class Ledger_Serializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
 class Bills_Serializer(serializers.ModelSerializer):
     class Meta: 
         model = Expenses
         fields = '__all__'
+
         
     def validated_amount(self, amount):
         try:

@@ -33,9 +33,7 @@ from .views import (
                    createEntry_Ledger,
                    createEntry_userLedgers,
                    inProgress,
-        
                    billClass
-            
 )
 urlpatterns = [
     
