@@ -22,11 +22,12 @@ html, body {
 }
 
 #mainTitle {
-    font-size: 75px;
+    font-size: 85px;
     text-align: center;
     text-transform: 'uppercase';
     text-rendering: 'optimizeLegibility';
     color:#e0dfdc;
+    font-family: Rockwell;
 
 }
 
