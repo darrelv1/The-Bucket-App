@@ -52,7 +52,7 @@ from django.core.serializers import serialize
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from TheBucketObject.bucket import Buckets
+from .TheBucketObject.bucket import Buckets
 
 import json
 
@@ -732,11 +732,30 @@ ALL UPDATE REQUESTS
 """
 
 class billClass(APIView):
-    serializer_class = Bills_Serializer
+    serializer_class =Bills_Serializer
 
-    def get(self):
+    def get(self, request):
         all_expenses = Expenses.objects.all()
-        return Response(Bills_Serializer(Expenses.objects.all(), many=True).data,status=status.HTTP_202_ACCEPTED)
+        bucket = self.serializer_class()
+        bucket_data = bucket.make_a_bucket()
+
+        bucket_response = {
+            "all_expenses": [{"expenseName": expense.expense_name ,
+                              "installmentDetails": expense.installment,
+                              "expenseAmount": expense.amount,
+                              "expense_contributed_amount": expense.contributed_amount,
+                              "expected_floating_balance": expense.expected_floating_balance
+                              } for expense in bucket_data.expenses],
+            "balance":bucket_data.balance,
+            "balanceContrib": bucket_data.balance_contrib,
+            "balancePostContrib":  bucket_data.balance_post_contrib,
+            "currentFloatingBalance": bucket_data.current_floating_balance,
+            "floatingBalance": bucket_data.floating_balance
+        }
+
+
+        print(f"This is the output of the view {bucket_response} ")
+        return Response(bucket_response,status=status.HTTP_202_ACCEPTED)
     
     def post(self, request):
         RESTcreateLedger(self.serializer_class, request.data)       

@@ -25,6 +25,7 @@ const LayoutComponent = ({setUser, activeUser}) => {
 
     const [collapsed, setCollapsed] = useState(false);
     const [users, updateUsers] = useState([]);
+    const  [bucketData, setBucketData] = useState({})
     console.log("*fixed*Changed function and is currently pass objs for parameters to deconstuct");
 
 
@@ -153,11 +154,11 @@ const LayoutComponent = ({setUser, activeUser}) => {
             >
               
               <Routes> 
-                <Route path ='/' element={<Dashboard />}/>
+                <Route path ='/' element={<Dashboard bucketData={bucketData} setBucketData{setBucketData}/>}/>
                 <Route path="/create" element={<EntryForm users={users}/>}/>
                 <Route path="/modify" element={<EntryForm users={users}  />}/>
                 <Route path='/AllUsers' element={< Ledger activeUser={activeUser} users={users}/>}/>
-                <Route path="/bills" element={<BillEntry/>}/>
+                <Route path="/bills" element={<BillEntry  bucketData={bucketData} setBucketData{setBucketData}/>}/>
               </Routes>
             </div>
             

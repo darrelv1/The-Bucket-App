@@ -1,4 +1,5 @@
-class BaseApp:
-    pass
+# class BaseApp:
+#     pass
+#
+# # from .TheBucketObject import bucket, assisting, Expense, Installment, bucket_types, base
 
-from .TheBucketObject import bucket, helpers, Expense, Installment, bucket_types, base

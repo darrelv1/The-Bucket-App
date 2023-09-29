@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import Card from './Card'
 
 
-const BillEntry = () => {
+const BillEntry = ({setBucketData, bucketDatas}) => {
 
    const [expense, setExpenses] = React.useState({})
    const [resultON, setResultON] = React.useState(false)
@@ -24,8 +24,11 @@ const BillEntry = () => {
             }
             
         })
-        
+    }
 
+    const getIT = () => {
+        axios.get('http://localhost:8000/account/bills')
+            .then(response =>response)
     }
 
     const FormTitleStyle = {
@@ -46,8 +49,6 @@ const BillEntry = () => {
         console.log(`Error Wrapper cb ${Object.getPrototypeOf(cb)}, constuctorName${cb.constructor.name}  ,err${err} `)
     }
    }}
-
-  
 
     const addExpense = (values) => {
         setExpenses(()=>{ 
@@ -70,6 +71,7 @@ const BillEntry = () => {
         addExpenseWrapped(values);
         console.log(expense)
         postEntry()
+        getIT()
       };
 
 

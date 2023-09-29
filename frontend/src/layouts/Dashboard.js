@@ -3,7 +3,7 @@ import CardHolder from '../components/Cardholder'
 import Card from '../components/Card'
 
 
-const Dashboard = ({body, header, footer})=>{
+const Dashboard = ({bucketData, setBucketData})=>{
 
     const listofCard = [        
         'Bucket Total',

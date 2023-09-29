@@ -23,6 +23,34 @@ class Bills_Serializer(serializers.ModelSerializer):
         model = Expenses
         fields = '__all__'
 
+
+    def make_a_bucket(self):
+        all_expenses = Expenses.objects.all()
+        fixed_bucket = Buckets("Fixed", "Fixed")
+
+        field_list = Expenses._meta.get_fields()
+        output = []
+        # make a simple iteration:
+        # for exp in all_expenses:
+        #     obj = {}
+        #     for index,field in enumerate(field_list[1:]):
+        #         detail = {}
+        #         print(f"index {index}")
+        #         obj[field.name] = getattr(exp, field.name)
+        #     output = [*output, obj]
+
+        for exp in all_expenses:
+            obj = {}
+            obj['expense'] = getattr(exp, 'expense')
+            obj['details'] = {}
+            obj['details']['amount'] = getattr(exp, 'amount')
+            obj['details']['due_date'] = getattr(exp, 'date').month
+            obj['details']['frequency'] = "biweekly"
+            output = [*output, obj]
+
+        fixed_bucket.expenses = output
+        return fixed_bucket
+        # return output
         
     def validated_amount(self, amount):
         try:
@@ -49,6 +77,7 @@ class testing(serializers.ModelSerializer):
     def get_username(self, obj):
         userID = self.fields("user")
         print(f"userID {userID}")
+
         return UserProfile.get(id=userID).name
     
 
