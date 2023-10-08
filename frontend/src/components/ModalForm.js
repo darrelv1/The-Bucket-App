@@ -18,7 +18,7 @@ import {
 
 
  
-const ModalForm = ({ pk, users , isModalOpen, setIsModalOpen, activeUser, prevData, setPrevData}) =>{
+const ModalForm = ({ pk, users , isModalOpen, setIsModalOpen, activeUser, prevData, setPrevData, getLedgerData}) =>{
 
    // const [adjData , setAdjData] = useState({})
    const [ form ] = Form.useForm();
@@ -70,6 +70,7 @@ const restartValues = () => {
         .then(response => setcomplete(true))
         
         restartValues();
+
         console.log("what was it")
         //form.resetFields();
         //console.log(Object.keys(entryData))
@@ -162,9 +163,10 @@ const restartValues = () => {
      <Form.Item
        wrapperCol={{
          offset: 8,
-         span: 16,
+         span: 18,
        }}
      >
+
        <Button type="primary" htmlType="submit">
          Submit
        </Button>

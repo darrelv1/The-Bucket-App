@@ -19,16 +19,17 @@ const statisticStyle = {
   gridTemplateColumns: 'repeat(3, 1fr)', // 2 equal-width columns
   gap: '2px', // adjust for desired space between cards
   gridAutoRows: 'auto'
+
 }
 
-const CardHolder = ({ key, cardProp }) => {
+const CardHolder = ({ key, cardProp, bucketData }) => {
   const [figures, setFigures] = useState({
-    'Bucket Total': 0.0,
-    'Remaining Expense Amount': [],
-    'Current Floating Balance': 0.0,
-    'Floating Balance': 0.0,
+    'Bucket Total': bucketData.balance,
+    'Remaining Expense Amount': bucketData.balancePostContrib,
+    'Current Floating Balance': bucketData.currentFloatingBalance,
+    'Floating Balance': bucketData.floatingBalance,
     'Number of Contributions': 0,
-    'Total Contrubutions': 0
+    'Total # of Expenses': bucketData.all_expenses.length,
   })
 
   const [cardIcons, setcardIcons] = useState({
@@ -37,7 +38,7 @@ const CardHolder = ({ key, cardProp }) => {
     'Current Floating Balance': <ImportOutlined/>,
     'Floating Balance': <HeartOutlined/>,
     'Number of Contributions': <ReadOutlined/>,
-    'Total Contrubutions': <HeartOutlined/>
+    'Total # of Expenses': <HeartOutlined/>
   })
 
   /**
@@ -54,7 +55,7 @@ const CardHolder = ({ key, cardProp }) => {
   //Replica of fetchStats where it doesn't fetch any data from an API it rather update state internally
   const fetchStats = () => {
     setFigures(preFigure => {
-      return { ...preFigure, ...overrideObj }
+      return { ...preFigure}
     })
   }
 
@@ -71,7 +72,7 @@ const CardHolder = ({ key, cardProp }) => {
       }; */
 
   useEffect(() => {
-    fetchStats()
+    // fetchStats()
 
     console.log(figures)
   }, [])
