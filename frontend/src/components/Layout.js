@@ -59,7 +59,41 @@ const LayoutComponent = ({setUser, activeUser}) => {
     token: { colorBgContainer },
   } = theme.useToken();
 
- 
+ const getResponse = async(url) => {
+     try {
+         const response  = await axios(url)
+         window.alert(url + " was successfully sent")
+     } catch (error){
+         throw error
+     }
+ }
+
+ //Utilize the FromData
+ const bodyFileBuilder= (dataInput)=>{
+
+     const formData= new FormData();
+     Array.from(dataInput).forEach((each)=>{
+
+         formData.append(`${each.name}`, each)
+     })
+        return formData
+     //assumption that this data has name property
+ }
+    const getPostRes= async (url, body) => {
+     let data = body
+
+     if(typeof(body) === "filelist"){
+       data =  bodyFileBuilder(body)
+     }
+     try {
+         const response  = await axios.post(url, data)
+         const dataLen = data.length
+
+         window.alert(url + " was successfully sent! The dataload included "+ dataLen + " items to the backend.")
+     } catch (error){
+         throw error
+     }
+ }
 
   const updateUsersItems = () =>{
 
@@ -158,7 +192,7 @@ const LayoutComponent = ({setUser, activeUser}) => {
                 <Route path="/create" element={<EntryForm users={users}/>}/>
                 <Route path="/modify" element={<EntryForm users={users}  />}/>
                 <Route path='/AllUsers' element={< Ledger activeUser={activeUser} users={users}/>}/>
-                <Route path="/bills" element={<BillEntry  bucketData={bucketData} setBucketData={setBucketData}/>}/>
+                <Route path="/bills" element={<BillEntry  bucketData={bucketData} setBucketData={setBucketData} getPostRes={getPostRes}/>}/>
               </Routes>
             </div>
             

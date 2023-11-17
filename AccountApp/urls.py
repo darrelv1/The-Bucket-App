@@ -76,7 +76,8 @@ urlpatterns = [
 
    
     path('bills', billClass.as_view()),
-    path('getbills', billClass.as_view())
+    path('getbills', billClass.as_view()),
+
     
 ]
 #path('bills', billClass.as_view())

@@ -7,10 +7,14 @@ import ModalForm from './ModalForm'
 
 const {Column, ColumnGroup} = Table;
 
+
+
+
 const Ledger = ({activeUser, users}) => {
     const [data, setData] = useState([]);
     const [columns, setcolumns] = React.useState([<Column title={'id'} dataIndex={'id'} key={'id'}/>,
         <Column title={'date'} dataIndex={'date'} key={'date'}/>,
+        <Column title={'debit'} dataIndex={'debit'} key={'debit'}/>,
         <Column title={'debit'} dataIndex={'debit'} key={'debit'}/>,
         <Column title={'credit'} dataIndex={'credit'} key={'credit'}/>,
         <Column title={'balance'} dataIndex={'balance'} key={'balance'}/>,
@@ -33,7 +37,6 @@ const Ledger = ({activeUser, users}) => {
 
     const getLedgerData = async () => {
         let endpoint = urls[activeUser]
-        console.log(`activeUsers Person : ${endpoint}`)
         const getData = await axios.get(`http://localhost:8000/account${endpoint}`);
         setData(getData.data);
         updateColumns(getData);
@@ -47,38 +50,26 @@ const Ledger = ({activeUser, users}) => {
         const id = itemID.id;
         const userID = itemID.user_id ? itemID.user_id : 1000
 
-        console.log(`userID = ${itemID.user_id}`)
         axios.get(`http://localhost:8000/account/deleteDynamic/${id}/${userID}`)
             .then(response => {
-                console.log(`deleted ${response}`)
             })
 
     }
 
     const updateColumns = async (res) => {
-        console.log(`data in updatyecol; ${res.data}`)
         const dataArray = [...res.data]
         try {
             const keys = Object.keys(dataArray[0]);
             const columnList = keys.map((key) => {
 
                 const magicKeys = ['id', 'debit', 'credit']
-                console.log(`DATA ${data}`)
-
                 if (magicKeys.includes(key)) {
-                    console.log(`key = ${magicKeys.includes(key)}`)
-
                     return <Column title={key} dataIndex={key} key={key}/>
                 } else {
                     return <Column title={key} dataIndex={key} key={key}/>
                 }
 
             })
-            console.log(`columnList ${columnList}`)
-            console.log(`columnList Keys ${Object.keys(columnList)}`)
-            console.log(`columnList [0] ${columnList[0]}`)
-            console.log(`columnList [0] keys ${Object.keys(columnList[0])}`)
-            console.log(`columnList [0] keys :key ${columnList[0].key}`)
             setcolumns(columnList)
         } catch (err) {
             setcolumns(() => {
@@ -92,9 +83,9 @@ const Ledger = ({activeUser, users}) => {
     }
 
 
+
     useEffect(() => {
         // updateColumns(getData)
-        console.log("Handling modal has been updated")
         getLedgerData()
 
         // updateColumns()git
@@ -113,14 +104,6 @@ const Ledger = ({activeUser, users}) => {
             "date": item.date, "amount": item.debit - item.credit, "description": item.description,
         }
         await setSelectedPromise(a)
-        console.log(`Date: ${a.date}`)
-        console.log(`amount: ${a.amount}`)
-        console.log(`description: ${a.description}`)
-        console.log(`selected date: ${selected.date}`)
-        console.log(`selected amount: ${selected.amount}`)
-        console.log(`selected description: ${selected.description}`)
-        console.log(Object.keys(selected))
-
     }
 
     const setSelectedPromise = (value) => {
@@ -131,7 +114,6 @@ const Ledger = ({activeUser, users}) => {
     }
 
     const handleModal = (item) => {
-        console.log('Handle Modal is triggered OCT 8th')
         handleValueUpdate(item)
         showModal();
     }

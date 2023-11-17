@@ -17,7 +17,7 @@ import {
  } from 'antd';
 
 
- 
+
 const ModalForm = ({ pk, users , isModalOpen, setIsModalOpen, activeUser, prevData, setPrevData, getLedgerData}) =>{
 
    // const [adjData , setAdjData] = useState({})
@@ -56,8 +56,7 @@ const restartValues = () => {
    
 
     const onFinish = (values) => {
-        console.log('Success:', values);
-       
+
         let body = {
        
               "date": values.date,
@@ -71,14 +70,12 @@ const restartValues = () => {
         
         restartValues();
 
-        console.log("what was it")
         //form.resetFields();
-        //console.log(Object.keys(entryData))
+
       };
 
       const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-      }; 
+      };
 
       const userList = users.map(user => {
         return <Select.Option  key={user} value={user}>{user}</Select.Option>

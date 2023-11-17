@@ -98,17 +98,17 @@ def getLedgersF(func):
 def getledger_byUserid(userID):
     def innerFunction(ledger): 
         try:
-            print(userID)
+
             complete =  True if ledger.objects.filter(user_id=userID).first() != None else False
-            print(ledger.objects.filter(user_id=userID).first())
-            print(complete)
+            # print(ledger.objects.filter(user_id=userID).first())
+            # print(complete)
             return ledger if complete else None
         except:
             print(f"didn't work for {ledger}") 
         
     listing  = getLedgersF(innerFunction)
     targetLedger = list(filter(lambda x: x is not None, listing))
-    print(targetLedger[0])
+    # print(targetLedger[0])
     return targetLedger[0]
 
 #WHERE YOU LEFT OFF APRIL23 *****************************************
@@ -116,7 +116,7 @@ def getledger_byUserid(userID):
 #get UserId by UserName
 def getuserId_byUserName(nameINPUT):
     profile = UserProfile.objects.filter(name=nameINPUT).first()
-    print(f"profile.id{profile.id}")
+
     return profile.id
 
 #All data deleted

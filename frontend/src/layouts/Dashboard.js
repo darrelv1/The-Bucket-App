@@ -3,6 +3,7 @@ import CardHolder from '../components/Cardholder'
 import Card from '../components/Card'
 import axios from "axios";
 import {useEffect} from "react";
+import Dragbox from "../components/Dragbox";
 
 
 const Dashboard = ({bucketData, setBucketData})=>{
@@ -54,7 +55,8 @@ const Dashboard = ({bucketData, setBucketData})=>{
 
 return (
 <div>
-
+    <input type="file" accept=".csv"/>
+    <Dragbox/>
     {bucketData && <CardHolder cardProp={listofCard} bucketData={bucketData}/> }
 </div>
 );

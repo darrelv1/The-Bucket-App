@@ -35,3 +35,10 @@ div .icon svg {
     width: 6em;
     height:6em;
 }
+
+.dragbox {
+    width: 800px;
+    height: 200px;
+    background-color: darkblue;
+
+}

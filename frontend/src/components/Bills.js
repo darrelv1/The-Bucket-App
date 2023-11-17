@@ -4,8 +4,8 @@ import axios from 'axios';
 import {Link} from 'react-router-dom'
 import Card from './Card'
 
-
-const BillEntry = ({setBucketData, bucketDatas}) => {
+import Dragbox from "./Dragbox";
+const BillEntry = ({setBucketData, bucketDatas, getPostRes}) => {
 
    const [expense, setExpenses] = React.useState({})
    const [resultON, setResultON] = React.useState(false)
@@ -208,6 +208,9 @@ const BillEntry = ({setBucketData, bucketDatas}) => {
        </Button>
      </Form.Item>
    </Form>
+
+                <button>Get xl Entry Form </button>
+                <Dragbox getPostRes={getPostRes}/>
    </div>
 }
 </div>
