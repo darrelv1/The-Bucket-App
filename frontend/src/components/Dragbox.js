@@ -6,6 +6,7 @@ import {typeOf} from "uri-js/dist/esnext/util";
 
 const Dragbox = ({getPostRes}) => {
     const [entryFile, setEntryFile] = useState(null);
+    const [savedFiles, setSavedFiles] = useState(null)
 
 
     const handleCSVFile = async()=>{
@@ -31,8 +32,10 @@ const Dragbox = ({getPostRes}) => {
         console.log(Object.getPrototypeOf(entryFile))
         console.log(typeOf(entryFile) === "filelist")
 
-        getPostRes("http://localhost:8000/account/bills", entryFile)
+        const response = await getPostRes("http://localhost:8000/account/bills", entryFile)
 
+        setSavedFiles(response.data)
+        console.log(response)
     }
 
     const handleDrop = (e) => {
@@ -46,6 +49,8 @@ const Dragbox = ({getPostRes}) => {
 
         return (
 
+            <>
+             { !savedFiles ?
             <div><h2>List of what has been uploaded</h2>
                 <ul>
                     {
@@ -55,29 +60,37 @@ const Dragbox = ({getPostRes}) => {
                     }
                 </ul>
                 <button onClick={handleCSVFile}>Load Entry</button>
-            </div>
+            </div>: (
+        <ul>
+            <h1> Entries saved onto the basereport</h1>
+            {savedFiles.map((eachfile) => (
+            <li>{eachfile.expense}</li>
+            ))}
+        </ul>
+        )}
+    </>
 
         )
     }
 
 
     return (
-        <div className="dragbox"
-             onDragOver={(e) => {
-                 e.preventDefault()
-             }}
-             onDrop={handleDrop}
+
+    <div className="dragbox"
+         onDragOver={(e) => {
+             e.preventDefault()
+         }}
+         onDrop={handleDrop}
+    >
+        <input
+            type="file"
+            multiple
+            hidden
         >
-            <input
-                type="file"
-                multiple
-                hidden
-            >
 
-            </input>
-            DRAG BOX - WHAT
-        </div>
-
+        </input>
+        DRAG BOX - WHAT
+    </div>
     )
 }
 

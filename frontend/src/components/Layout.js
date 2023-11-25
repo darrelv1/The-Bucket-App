@@ -79,6 +79,8 @@ const LayoutComponent = ({setUser, activeUser}) => {
         return formData
      //assumption that this data has name property
  }
+
+
     const getPostRes= async (url, body) => {
      let data = body
 
@@ -88,8 +90,9 @@ const LayoutComponent = ({setUser, activeUser}) => {
      try {
          const response  = await axios.post(url, data)
          const dataLen = data.length
-
          window.alert(url + " was successfully sent! The dataload included "+ dataLen + " items to the backend.")
+
+         return response
      } catch (error){
          throw error
      }

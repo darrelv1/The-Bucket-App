@@ -57,7 +57,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .TheBucketObject.bucket import Buckets
-
+from datetime import datetime
 import json
 
 """
@@ -824,68 +824,27 @@ class billClass(APIView):
     #     return Response(Bills_Serializer(Expenses.objects.all(), many=True).data,status=status.HTTP_202_ACCEPTED)
 
     def post(self, request):
-        msg = "it's all good in the hood fam"
-        print("Message has been recieved in the post_number2 view in the views.py file  ")
-
-        dir(request.data)
-
-        # print(request.data.keys())
-        #
-        # print(type(request.data['files[]']))
-        # print(dir(request.data['files[]']))
 
         uploaded_files = request.data['files[]']
-        print('chunks -> ...')
-        # print(uploaded_files.chunks())
-        #
-        # for cnk in uploaded_files.chunks():
-        #     print(cnk)
-
-
-        print(uploaded_files.content_type)
-
-        # parsed_csvfile = uploaded_files.read().decode('utf-8')
-        # parsed_csvfile = io.StringIO(parsed_csvfile)
         uploaded_files.seek(0)
-        # parsed_bytes = io.BytesIO(uploaded_files.read())
-        #
-        # print('request data -> ')
-        # print(parsed_bytes.getvalue())
-        # print(parsed_bytes.read())
-        # print(parsed_bytes.getvalue())
-        #
-        # view = parsed_bytes.getbuffer()
-        # print(uploaded_files.read().decode('utf-8'))
-        # csv_reader = csv.reader(parsed_bytes)
-        # for i in csv_reader:
-        #     print(i)
-        # print(uploaded_files.tell())
 
-
-
-
-        # print(pd.read_csv(csv_reader))
-
-        in_memoryfile = uploaded_files.read().decode('utf-8')
-
+        in_memoryfile = uploaded_files.read().decode('utf-8-sig')
         temp_csv = io.StringIO(in_memoryfile)
-
         csvfile = csv.DictReader(temp_csv)
 
+        try:
+            list_of_objects = []
+            for row_ind, row in enumerate(csvfile):
+                row = {eachKey.lower(): row[eachKey] for eachKey in row}
+                list_of_objects = [*list_of_objects, row]
 
-        for row_index, row in enumerate(csvfile):
-            print(row.items())
+            print(list_of_objects)
+            for each in list_of_objects:
+                RESTcreateLedger(Bills_Serializer, each)
 
+            return Response(Bills_Serializer([each for each in list_of_objects], many=True).data,
+                            status=status.HTTP_202_ACCEPTED)
 
+        except Exception as e :
 
-
-
-
-
-
-
-
-
-
-
-        return Response(status=status.HTTP_202_ACCEPTED)
+            return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

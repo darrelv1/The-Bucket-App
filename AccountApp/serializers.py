@@ -1,4 +1,6 @@
-from rest_framework import serializers 
+from datetime import datetime
+
+from rest_framework import serializers
 from .models import Ledger, userLedger1, userLedger2, userLedger3, UserProfile, Expenses
 #CRUD plugins:
 #Object Plugins:
@@ -38,6 +40,13 @@ class Bills_Serializer(serializers.ModelSerializer):
         #         print(f"index {index}")
         #         obj[field.name] = getattr(exp, field.name)
         #     output = [*output, obj]
+
+        def validate_date(self, value):
+            # Assuming the date is in 'day-month-year' format
+            try:
+                return datetime.strptime(value, '%d-%m-%Y').date()
+            except ValueError:
+                raise serializers.ValidationError("Date format is incorrect. Expected format: 'DD-MM-YYYY'.")
 
         for exp in all_expenses:
             obj = {}
