@@ -19,9 +19,9 @@ const BillEntry = ({setBucketData, bucketDatas, getPostRes}) => {
         
             console.log(`The request expenses ${Object.keys(expense)}`)    
             console.log(`reponse back ${response.data}`)
-            if( Object.entries(expense).length > 0){ 
-                setResultON(true)
+            if( Object.entries(expense).length > 0){
             }
+                setResultON(true)
             
         })
     }

@@ -795,6 +795,21 @@ ALL UPDATE REQUESTS
 """
 
 
+class ExpenseControl(APIView):
+    def get(self, request):
+        serializer_class = Bills_Serializer
+        all_entries = Expenses.objects.all()
+
+        print(all_entries)
+        return Response(serializer_class(all_entries, many=True).data, status=status.HTTP_202_ACCEPTED)
+
+    def delete(self, request, key, format=None):
+        target = Expenses.objects.get(id=key)
+        print("delete activated")
+        target.delete()
+        return Response(Bills_Serializer(target).data,status=status.HTTP_204_NO_CONTENT)
+
+
 class billClass(APIView):
     serializer_class = Bills_Serializer
 
@@ -845,6 +860,6 @@ class billClass(APIView):
             return Response(Bills_Serializer([each for each in list_of_objects], many=True).data,
                             status=status.HTTP_202_ACCEPTED)
 
-        except Exception as e :
+        except Exception as e:
 
             return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

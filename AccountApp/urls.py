@@ -22,6 +22,7 @@ from .views import (
                    delete_split2,
                    delete_split3,
                    dynamic_Delete,
+                   ExpenseControl,
                    getLedgerAll,
                    getLedgerby_id,
                    getLedgersby_Name,
@@ -33,7 +34,8 @@ from .views import (
                    createEntry_Ledger,
                    createEntry_userLedgers,
                    inProgress,
-                   billClass
+                   billClass,
+
 )
 urlpatterns = [
     
@@ -76,7 +78,10 @@ urlpatterns = [
 
    
     path('bills', billClass.as_view()),
+    path('bills/<int:key>', billClass.as_view()),
     path('getbills', billClass.as_view()),
+    path('getExpenses', ExpenseControl.as_view()),
+    path('getExpenses/<str:key>', ExpenseControl.as_view())
 
     
 ]
