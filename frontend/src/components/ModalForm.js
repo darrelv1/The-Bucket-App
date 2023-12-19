@@ -18,7 +18,9 @@ import {
 
 
 
-const ModalForm = ({ pk, users , isModalOpen, setIsModalOpen, activeUser, prevData, setPrevData, getLedgerData}) =>{
+
+const LedgerColumns = ["date", "debit"]
+const ModalForm = ({pk, users , isModalOpen, setIsModalOpen, activeUser, prevData, setPrevData, getLedgerData }) =>{
 
    // const [adjData , setAdjData] = useState({})
    const [ form ] = Form.useForm();
@@ -55,7 +57,7 @@ const restartValues = () => {
     }
    
 
-    const onFinish = (values) => {
+    const onFinishLedger= (values) => {
 
         let body = {
        
@@ -80,6 +82,22 @@ const restartValues = () => {
       const userList = users.map(user => {
         return <Select.Option  key={user} value={user}>{user}</Select.Option>
       })
+
+    const produceFormItems = () =>{
+          return
+        <Form.Item
+            name="date"
+            label="Date"
+            rules={[
+               {
+               required: true,
+               messages: "Date is required"
+               }
+            ]}
+            >
+          <Input type="date"/>
+    </Form.Item>
+    }
 
 
     return(
@@ -107,7 +125,7 @@ const restartValues = () => {
        'description' :prevData.description,
        remember: true,
      }}
-     onFinish={onFinish}
+     onFinish={onFinishLedger}
      onFinishFailed={onFinishFailed}
      autoComplete="off"
    >
@@ -138,7 +156,6 @@ const restartValues = () => {
        </Form.Item>
        <Form.Item 
        name="description"
-       label="Description"
        rules ={[
          {
             required: true, 

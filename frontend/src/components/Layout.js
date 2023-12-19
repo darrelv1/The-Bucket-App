@@ -138,7 +138,7 @@ const LayoutComponent = ({setUser, activeUser}) => {
         
         <Layout
         style={{
-          minHeight: '100vh',
+           minHeight: '100vh',
          
         }}
       >
@@ -153,6 +153,7 @@ const LayoutComponent = ({setUser, activeUser}) => {
               background: 'rgba(255, 255, 255, 0.2)',
             }}
           />
+
           <Menu 
           theme="dark" 
           defaultSelectedKeys={['1']} 
@@ -185,7 +186,7 @@ const LayoutComponent = ({setUser, activeUser}) => {
             <div
               style={{
                 padding: 24,
-                minHeight: 100,
+                minHeight: 1000,
                 background: colorBgContainer,
   
               }}

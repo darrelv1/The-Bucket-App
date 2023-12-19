@@ -803,11 +803,20 @@ class ExpenseControl(APIView):
         print(all_entries)
         return Response(serializer_class(all_entries, many=True).data, status=status.HTTP_202_ACCEPTED)
 
-    def delete(self, request, key, format=None):
-        target = Expenses.objects.get(id=key)
+    def delete(self, request, key=None, format=None):
+
+        if key == None:
+            print(f"request params {request.query_params}")
+            for key, value in request.query_params.items():
+                target = Expenses.objects.get(id=value)
+                target.delete()
+        else:
+            target = Expenses.objects.get(id=key)
+            target.delete()
+            return Response(Bills_Serializer(target).data, status=status.HTTP_204_NO_CONTENT)
+
         print("delete activated")
-        target.delete()
-        return Response(Bills_Serializer(target).data,status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class billClass(APIView):

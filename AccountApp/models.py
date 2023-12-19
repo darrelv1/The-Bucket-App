@@ -6,7 +6,7 @@ from .BaseApp.Profiles import UserInvestor
 
 
 def validator_not_negative(value):
-    if value > 0:
+    # if value > 0:
         raise ValidationError(f"{value} is not a negative number! Please enter a credit")
    
 def validator_not_positive(value):
