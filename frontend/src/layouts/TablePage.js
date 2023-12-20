@@ -2,6 +2,7 @@ import {Table, Radio, Divider, Space} from 'antd'
 import React, {useState, useEffect} from 'react'
 import axios from "axios"
 import Typography from "antd/es/typography/Typography";
+import ModalForm from "../components/ModalForm";
 // rowSelection object indicates the need for row selection
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
@@ -20,18 +21,18 @@ const rowSelection = {
 const {Column} = Table
 
 const TablePage = () =>{
-    const [selectionType, setSelectionType] = useState(null)
+    const [selectionType, setSelectionType] = useState("radio")
     const [allExpenses, setExpenses ] = useState([])
     const [dyCols, setDyCols] = useState([]);
     const [id, setId] = useState(null)
-
+    const [selectExpense, setSelectExp] = useState("");
+    const [isModalOpen, setModalOpen] = useState(false)
 
     const [rows, setRows] = useState([])
 
     useEffect(()=>{
-getData()
+        getData()
     },[id,selectionType])
-
 
 
     const rowSelection = {
@@ -87,6 +88,15 @@ getData()
         console.log("Edit works ")
         console.log(Object.keys(record))
         const targetID = record.key
+        //Updating the selected Edit item
+        setSelectExp({
+            'Expense': record.expense,
+            'Date': record.date,
+            'Amount': record.amount,
+            'Frequency': record.frequency,
+            'Bucket': record.bucket,
+            'Action': record.action
+        })
         let endpoint = "getExpenses" + targetID
 
 
@@ -149,6 +159,15 @@ getData()
             <button onClick={getData}>click me</button>
             </div>
            <Divider />
+                <ModalForm
+            pk={selectExpense.id && selectExpense.id}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setModalOpen}
+            prevData={selectExpense}
+            setPrevData={setSelectExp}
+
+        />
+
       <Radio.Group
         onChange={({ target: { value } }) => {
             console.log(value)

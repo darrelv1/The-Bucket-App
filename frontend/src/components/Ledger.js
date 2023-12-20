@@ -127,6 +127,7 @@ const Ledger = ({activeUser, users}) => {
             <Button type="primary" onClick={getLedgerData} ref={refreshButton}>Refresh</Button>
         </Space>
         <ModalForm
+            url="http://localhost:8000/account/modifyEntry_userLedgers/"
             pk={id}
             activeUser={activeUser}
             isModalOpen={isModalOpen}

@@ -22,12 +22,17 @@ import Dashboard from '../layouts/Dashboard';
 import TablePage from "../layouts/TablePage";
 import CardHolder from './Cardholder';
 
+
+
 const LayoutComponent = ({setUser, activeUser}) => {
 
+    const [selected, setSelected] = useState(null);
     const [collapsed, setCollapsed] = useState(false);
     const [users, updateUsers] = useState([]);
     const  [bucketData, setBucketData] = useState(null)
     console.log("*fixed*Changed function and is currently pass objs for parameters to deconstuct");
+
+
 
 
     const getItem =({label, key, icon, children, to}) =>{
