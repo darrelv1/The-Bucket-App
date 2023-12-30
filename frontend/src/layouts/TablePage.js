@@ -20,14 +20,13 @@ const rowSelection = {
 
 const {Column} = Table
 
-const TablePage = () =>{
+const TablePage = ({selectOps} ) =>{
     const [selectionType, setSelectionType] = useState("radio")
     const [allExpenses, setExpenses ] = useState([])
     const [dyCols, setDyCols] = useState([]);
     const [id, setId] = useState(null)
     const [selectExpense, setSelectExp] = useState("");
     const [isModalOpen, setModalOpen] = useState(false)
-
     const [rows, setRows] = useState([])
 
     useEffect(()=>{
@@ -79,16 +78,15 @@ const TablePage = () =>{
             console.log(`error:${e}`)
         }//
 
-        console.log("The response will be here")
         console.log(response)
 
     }
 
-    const handleModal = (record) =>{
-        console.log("Edit works ")
+    const handleModal = async (record) =>{
         console.log(Object.keys(record))
         const targetID = record.key
         //Updating the selected Edit item
+        setModalOpen(true)
         setSelectExp({
             'Expense': record.expense,
             'Date': record.date,
@@ -102,7 +100,7 @@ const TablePage = () =>{
 
     }
 
-    const delOrmod = ()=>{
+    const delOrmod = (record)=>{
     return (  <Space size="middle">
         {selectionType === "radio" && (
         <Typography onClick={() => handleModal(record)}> Edit</Typography>
@@ -129,7 +127,7 @@ const TablePage = () =>{
                 key="action"
                 render={(_, record) => (
 
-                   delOrmod())}
+                   delOrmod(record))}
             /> ]
 
             setDyCols(tempCols)
@@ -165,7 +163,7 @@ const TablePage = () =>{
             setIsModalOpen={setModalOpen}
             prevData={selectExpense}
             setPrevData={setSelectExp}
-
+            selectOps={selectOps}
         />
 
       <Radio.Group

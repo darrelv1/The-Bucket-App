@@ -5,12 +5,36 @@ import {
 } from 'antd';
 
 
-const ModalForm = ({pk, users, isModalOpen, setIsModalOpen, activeUser, prevData, setPrevData, url, getLedgerData}) => {
+const ModalForm = ({
+                       pk,
+                       users,
+                       isModalOpen,
+                       setIsModalOpen,
+                       activeUser,
+                       prevData,
+                       setPrevData,
+                       url,
+                       getLedgerData,
+                       selectOps
+                   }) => {
 
     // const [adjData , setAdjData] = useState({})
     const [form] = Form.useForm();
     const [completed, setcomplete] = useState(false);
 
+    useEffect(() => {
+
+        produceFormItems()
+        form.setFieldsValue((() => {
+            const innerDict = {}
+            for (let [key, value] of Object.entries(prevData)) {
+                let newKey = key.toLowerCase()
+                innerDict[newKey] = value
+            }
+            return innerDict
+        })())
+
+    }, [, prevData])
 
     const recordtime = () => {
         const today = new Date();
@@ -36,25 +60,25 @@ const ModalForm = ({pk, users, isModalOpen, setIsModalOpen, activeUser, prevData
         setcomplete(false)
         restartValues();
         form.resetFields();
+
     }
 
     const onFinish = (values) => {
         let nameOfKeys = Object.keys(values)
 
         let body = {};
-        nameOfKeys.forEach((key)=>{
+        nameOfKeys.forEach((key) => {
 
-            if(key ==="users"){
+            if (key === "users") {
                 body["user"] = values["users"]
             } else {
                 try {
                     body[key] = values[key]
-                } catch (e){
+                } catch (e) {
                     console.log(e)
                 }
             }
         })
-
 
 
         console.log(Object.entries(values))
@@ -70,118 +94,122 @@ const ModalForm = ({pk, users, isModalOpen, setIsModalOpen, activeUser, prevData
     };
 
     const onFinishFailed = (errorInfo) => {
+        console.log(errorInfo)
+        return (errorInfo)
     };
 
-    const userList = users.map(user => {
+
+    const userList = users !== undefined ? users.map(user => {
         return <Select.Option key={user} value={user}>{user}</Select.Option>
-    })
+    }) : ""
 
 
-    const produceFormItems = (data) => {
+    //helper: selectionOption generator
+    const selectionBuild = (name) => {
+        console.log("IF NAME IS undefined" + name !== undefined)
+        return name !== undefined ? name.map(item => {
+            return <Select.Option key={item} value={item}>{item}</Select.Option>
+        }) : ""
+    }
 
 
-        const listOfFormItems = data.map((dataItem) => {
+    const produceFormItems = () => {
 
+
+        //remove 'Action' name form the array
+        const keys = Object.keys(prevData).slice(0, Object.keys(prevData).length - 1)
+
+        const listOfFormItems = keys.map((dataItem) => {
+
+            const arrOfAns = [];
             let capDataItem = dataItem.charAt(0).toUpperCase() + dataItem.slice(1)
             let dataItemLow = dataItem.toLowerCase()
+            let formItem = null;
 
-            return (
 
-                <Form.Item
-                    name={dataItemLow}
-                    label={capDataItem}
-                    rules={[{
-                        required: true, messages: `${capDataItem} is required`
-                    }]}
-                >
-                    <Input type={dataItemLow === "date" ? "date" : dataItemLow}/>
-                </Form.Item>
+            for (let selectTitle of Object.keys(selectOps)) {
 
-            )
+
+                if (selectTitle === capDataItem) {
+                    formItem = (
+
+                        <Form.Item
+                            name={dataItemLow}
+                            label={capDataItem}
+                            rules={[
+                                {
+                                    required: true,
+                                    messages: `${capDataItem} is required`
+                                }
+                            ]}
+                        >
+                            <Select>
+                                {selectionBuild(selectOps[selectTitle])}
+                            </Select>
+                        </Form.Item>
+
+                    )
+
+                }
+            }
+
+            if (formItem === null) {
+
+                formItem = (
+                    <Form.Item
+                        name={dataItemLow}
+                        label={capDataItem}
+                        rules={[{
+                            required: true, messages: `${capDataItem} is required`
+                        }]}
+                    >
+                        <Input type={dataItemLow === "date" ? "date" : dataItemLow}/>
+                    </Form.Item>
+                )
+            }
+
+            return formItem
         })
+        form.resetFields
+        return <Form
+            form={form}
+            name="basic"
+            labelCol={{
+                span: 8,
+            }}
+            wrapperCol={{
+                span: 16,
+            }}
+            style={{
+                maxWidth: 600,
+            }}
+            // initialValues={{
+            //     "expense": prevData.Expense,
+            //     "date": prevData.Date,
+            //     "amount": prevData.Amount,
+            //
+            // }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+        >
+            <div>
+                {listOfFormItems}
+            </div>
+        </Form>
 
-        return listOfFormItems
     }
 
 
     return (<Modal
-            title={completed ? `Transaction ${pk}, has been edited ${recordtime()}` : `Edit Tranaction ${pk}`}
-            open={isModalOpen}
-            onOk={handleOk}
-            onCancel={handleCancel}
-        >
-            <Form
-                form={form}
-                name="basic"
-                labelCol={{
-                    span: 8,
-                }}
-                wrapperCol={{
-                    span: 16,
-                }}
-                style={{
-                    maxWidth: 600,
-                }}
-                initialValues={{
-                    'date': prevData.date,
-                    'amount': prevData.amount,
-                    'description': prevData.description,
-                    remember: true,
-                }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-                autoComplete="off"
-            >
-                {/*{produceFormItems(['date', 'amount', 'description', 'users'])}*/}
-                <Form.Item
-                    name="date"
-                    label="Date"
-                    rules={[{
-                        required: true, messages: "Date is required"
-                    }]}
-                >
-                    <Input type="date"/>
-                </Form.Item>
-                <Form.Item
-                    name="amount"
-                    label="Amount"
-                    rules={[{
-                        required: true, messages: "Amount is required"
-                    }]}
+        title={completed ? `Transaction ${pk}, has been edited ${recordtime()}` : `Edit Tranaction ${pk}`}
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+    >
 
-                >
-                    <Input/>
-                </Form.Item>
-                <Form.Item
-                    name="description"
-                    label="Description"
-                    rules={[{
-                        required: true, messages: "Description is required"
-                    }]}
-                >
-                    <Input/>
-                </Form.Item>
-                <Form.Item
-                    name="users"
-                    label="Users"
-                >
-                    <Select>
-                        {userList}
-                        {/* <Select.Option value="demo">Demo</Select.Option> */}
-                    </Select>
-                </Form.Item>
-                <Form.Item
-                    wrapperCol={{
-                        offset: 8, span: 18,
-                    }}
-                >
-
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                </Form.Item>
-            </Form>
-        </Modal>)
+        {produceFormItems()}
+    </Modal>)
 }
 
 export default ModalForm
