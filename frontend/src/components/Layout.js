@@ -22,14 +22,20 @@ import Dashboard from '../layouts/Dashboard';
 import TablePage from "../layouts/TablePage";
 import CardHolder from './Cardholder';
 
+
+
 const LayoutComponent = ({setUser, activeUser}) => {
 
+    const [selected, setSelected] = useState(null);
     const [collapsed, setCollapsed] = useState(false);
     const [users, updateUsers] = useState([]);
     const  [bucketData, setBucketData] = useState(null)
     console.log("*fixed*Changed function and is currently pass objs for parameters to deconstuct");
 
-
+    const selectOps = {
+        "Frequency": ["BiWeekly", "Monthly", "Yearly"],
+        "Bucket": ["Recurring", "Variable", "Discretionary"]
+    }
     const getItem =({label, key, icon, children, to}) =>{
       return {
         key,
@@ -48,7 +54,7 @@ const LayoutComponent = ({setUser, activeUser}) => {
     const  [items, setItems] = useState([
       getItem({label: 'Dashboard', key: '1', icon: <PieChartOutlined />, to:"/"}),
       getItem({label:'Post an Entry', key: '2', icon: <DesktopOutlined />, to:"/create"}),
-      getItem({label:'User Ledger', key: 'sub1', icon: <UserOutlined />,children:[], to: "/AllUsers"}),
+      getItem({label:'User Ledgaer', key: 'sub1', icon: <UserOutlined />,children:[], to: "/AllUsers"}),
       getItem({label:'Profiles', key:'sub2', icon: <TeamOutlined />,children: [getItem({label:'Team 1', key: '6'}), getItem({label:'Team 2', key:'8'})], to: "/"}),
       getItem({label:'Modify an Entry', key: '3', icon: <TableOutlined />, to:"/modify"}),
       getItem({label:'Create an Expense', key:'9', icon:<FileOutlined />, to:"/bills"}),
@@ -195,7 +201,7 @@ const LayoutComponent = ({setUser, activeUser}) => {
               <Routes> 
                 <Route path ='/' element={<Dashboard bucketData={bucketData} setBucketData={setBucketData}/>}/>
                 <Route path="/create" element={<EntryForm users={users}/>}/>
-                <Route path="/modify" element={<TablePage users={users}  />}/>
+                <Route path="/modify" element={<TablePage users={users}  selectOps={selectOps} />}/>
                 <Route path='/AllUsers' element={< Ledger activeUser={activeUser} users={users}/>}/>
                 <Route path="/bills" element={<BillEntry  bucketData={bucketData} setBucketData={setBucketData} getPostRes={getPostRes}/>}/>
               </Routes>
