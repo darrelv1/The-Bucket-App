@@ -3,24 +3,11 @@ import React, {useState, useEffect} from 'react'
 import axios from "axios"
 import Typography from "antd/es/typography/Typography";
 import ModalForm from "../components/ModalForm";
-// rowSelection object indicates the need for row selection
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-
-
-    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-  },
-  getCheckboxProps: (record) => ({
-    disabled: record.name === 'Disabled User',
-    // Column configuration not to be checked
-    name: record.name,
-  }),
-};
 
 
 const {Column} = Table
 
-const TablePage = ({selectOps} ) =>{
+const TablePage = ({selectOps}) =>{
     const [selectionType, setSelectionType] = useState("radio")
     const [allExpenses, setExpenses ] = useState([])
     const [dyCols, setDyCols] = useState([]);
@@ -28,23 +15,36 @@ const TablePage = ({selectOps} ) =>{
     const [selectExpense, setSelectExp] = useState("");
     const [isModalOpen, setModalOpen] = useState(false)
     const [rows, setRows] = useState([])
+    const [rowKeys, setRowKeys] = useState([])
 
     useEffect(()=>{
         getData()
-    },[id,selectionType])
+        console.log("selectExpense "+ selectExpense)
+        console.log( selectExpense)
+        console.log("rowKeys" + rowKeys)
+    },[id,selectionType,isModalOpen,rowKeys])
 
 
     const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
       setRows(selectedRows)
+      setRowKeys(selectedRowKeys)
+
     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+
   },
   getCheckboxProps: (record) => ({
     disabled: record.name === 'Disabled User',
     // Column configuration not to be checked
-    name: record.name,
+      name: record.name,
   }),
-};
+        onSelectMultiple: (selectedRowKeys, selectedRows) => {
+            setRowKeys(selectedRowKeys)
+        },
+        onSelectAll:(selectRowKeys, selectedRows)=>{
+            setRowKeys(selectRowKeys)
+        }
+    };
 
     const getTableData = async (endpoint, method) =>{
         const urlPattern = {
@@ -68,26 +68,40 @@ const TablePage = ({selectOps} ) =>{
         // const response = await getTableData(endPoint,'delete')
         console.log(`endPoint ${endPoint}`)
 
-        axios.delete(`http://localhost:8000/account/${endPoint}`)
-
         let response;
+        if(rowKeys.length >= 2){
+            try {
+             response = await axios.delete(`http://localhost:8000/account/${endPoint}`, {data: rowKeys})
+
+        } catch (e){
+            console.log(`error:${e}`)
+        }}
+        else{
         try {
              response = await axios.delete(`http://localhost:8000/account/${endPoint}`, {data: record.key})
 
         } catch (e){
             console.log(`error:${e}`)
-        }//
+        }}
 
+
+        console.log("rows" + rows)
+        console.log(rows)
         console.log(response)
 
     }
 
     const handleModal = async (record) =>{
+
+
+        console.log("selectExpense" + selectExpense)
+        console.log(selectExpense)
         console.log(Object.keys(record))
         const targetID = record.key
         //Updating the selected Edit item
         setModalOpen(true)
         setSelectExp({
+            'id':record.id,
             'Expense': record.expense,
             'Date': record.date,
             'Amount': record.amount,
@@ -113,6 +127,7 @@ const TablePage = ({selectOps} ) =>{
     const getData = async ()=> {
         try {
             const response = await axios.get('http://localhost:8000/account/getExpenses')
+            console.log(response)
             let tempCols = Object.keys(response.data[0])
             tempCols = tempCols.map((each)=> {
                 return( <Column
@@ -131,11 +146,14 @@ const TablePage = ({selectOps} ) =>{
             /> ]
 
             setDyCols(tempCols)
+            console.log("response from the request: ")
+            console.log(response)
             setExpenses(()=> {
 
                 const result = response.data.map((each,index) => {
+
                     let modObject = {...each, 'key': each['id'] }
-                    delete modObject.id
+                    // delete modObject.id
                     return modObject
                 })
                 return result
@@ -158,7 +176,8 @@ const TablePage = ({selectOps} ) =>{
             </div>
            <Divider />
                 <ModalForm
-            pk={selectExpense.id && selectExpense.id}
+                    type={"Expense"}
+            pk={selectExpense.id}
             isModalOpen={isModalOpen}
             setIsModalOpen={setModalOpen}
             prevData={selectExpense}
@@ -183,6 +202,9 @@ const TablePage = ({selectOps} ) =>{
         rowSelection={{
           type: selectionType,
           ...rowSelection,
+        }}
+        scroll={{
+            "y":500
         }}
         // columns={dyCols}
         dataSource={allExpenses}

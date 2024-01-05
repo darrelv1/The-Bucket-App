@@ -81,7 +81,8 @@ urlpatterns = [
     path('bills/<int:key>', billClass.as_view()),
     path('getbills', billClass.as_view()),
     path('getExpenses', ExpenseControl.as_view()),
-    path('getExpenses/<str:key>', ExpenseControl.as_view())
+
+    path('getExpenses/<int:pk>', ExpenseControl.as_view())
 
     
 ]

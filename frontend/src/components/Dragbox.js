@@ -32,10 +32,16 @@ const Dragbox = ({getPostRes}) => {
         console.log(Object.getPrototypeOf(entryFile))
         console.log(typeOf(entryFile) === "filelist")
 
-        const response = await getPostRes("http://localhost:8000/account/bills", entryFile)
+        try {
+            const response = await getPostRes("http://localhost:8000/account/bills", entryFile)
+            setSavedFiles(response.data)
+            console.log(response)
+        } catch (e) {
+            console.log(`Error ${e.error}`)
+            console.log('There has been an error in the message')
+            window.alert("ERROR there hass been an error")
 
-        setSavedFiles(response.data)
-        console.log(response)
+        }
     }
 
     const handleDrop = (e) => {

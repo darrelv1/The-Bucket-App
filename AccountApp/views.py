@@ -803,11 +803,36 @@ class ExpenseControl(APIView):
         print(all_entries)
         return Response(serializer_class(all_entries, many=True).data, status=status.HTTP_202_ACCEPTED)
 
-    def delete(self, request, key, format=None):
-        target = Expenses.objects.get(id=key)
-        print("delete activated")
-        target.delete()
-        return Response(Bills_Serializer(target).data,status=status.HTTP_204_NO_CONTENT)
+    def put(self, request, pk):
+        print("THis is the put method")
+        serializer_class = Bills_Serializer
+        model_instance = Expenses.objects.get(id=pk)
+        edit_data = request.data
+
+        print(pk)
+        print("Request Data")
+        print(request.data)
+        serailized_edit = serializer_class(model_instance, edit_data)
+
+        if serailized_edit.is_valid():
+            serailized_edit.save()
+
+        return Response(status.HTTP_202_ACCEPTED)
+
+    def delete(self, request, pk, format=None):
+        print(request.data)
+
+        if (len(request.data) > 1):
+
+            delete_objects = [Expenses.objects.get(id=item).delete() for item in request.data]
+
+        else:
+
+            target = Expenses.objects.get(id=pk)
+            print("delete activated")
+            target.delete()
+
+        return Response(status=status.HTTP_202_ACCEPTED)
 
 
 class billClass(APIView):

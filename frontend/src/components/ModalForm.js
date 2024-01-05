@@ -6,6 +6,7 @@ import {
 
 
 const ModalForm = ({
+                       type,
                        pk,
                        users,
                        isModalOpen,
@@ -61,17 +62,19 @@ const ModalForm = ({
         restartValues();
         form.resetFields();
 
+
     }
 
     const onFinish = (values) => {
         let nameOfKeys = Object.keys(values)
-
+        console.log("pk "+ pk)
         let body = {};
         nameOfKeys.forEach((key) => {
 
             if (key === "users") {
                 body["user"] = values["users"]
-            } else {
+            }
+            else {
                 try {
                     body[key] = values[key]
                 } catch (e) {
@@ -81,14 +84,23 @@ const ModalForm = ({
         })
 
 
+
+        // delete  body["id"]
         console.log(Object.entries(values))
         console.log(Object.entries(body))
+        if (type === "Mortgage")
+            {
+                axios.put(`http://localhost:8000/account/modifyEntry_userLedgers/${pk}`, body)
+                    .then(response => setcomplete(true))
+            }
+        else/* if(type === "Expense")*/
+            {
+                axios.put(`http://localhost:8000/account/getExpenses/${pk}`, body)
+                    .then((response)=> console.log(response))
+            }
 
-        axios.put(`http://localhost:8000/account/modifyEntry_userLedgers/${pk}`, body)
-            .then(response => setcomplete(true))
-
-        restartValues();
-
+        // restartValues();
+        setcomplete(true)
         //form.resetFields();
 
     };
@@ -118,6 +130,7 @@ const ModalForm = ({
 
         //remove 'Action' name form the array
         const keys = Object.keys(prevData).slice(0, Object.keys(prevData).length - 1)
+
 
         const listOfFormItems = keys.map((dataItem) => {
 
@@ -153,13 +166,13 @@ const ModalForm = ({
                 }
             }
 
-            if (formItem === null) {
+            if (formItem === null && dataItemLow !== "id") {
 
                 formItem = (
                     <Form.Item
                         name={dataItemLow}
                         label={capDataItem}
-                        rules={[{
+                        rules={dataItemLow !== "amount" && [{
                             required: true, messages: `${capDataItem} is required`
                         }]}
                     >
@@ -195,14 +208,29 @@ const ModalForm = ({
         >
             <div>
                 {listOfFormItems}
+
+                     <Form.Item
+       wrapperCol={{
+         offset: 8,
+         span: 16,
+       }}
+     >
+       <Button type="primary" htmlType="submit">
+         Submit
+       </Button>
+     </Form.Item>
             </div>
         </Form>
 
     }
+    const nameOption={
+            "Expense": prevData.Expense,
+            "Mortgage": pk
+        }
 
 
     return (<Modal
-        title={completed ? `Transaction ${pk}, has been edited ${recordtime()}` : `Edit Tranaction ${pk}`}
+        title={completed ?  `Transaction  "${nameOption[type]}", has been edited ${recordtime()}` : `Edit Tranaction "${nameOption[type]}"`}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
