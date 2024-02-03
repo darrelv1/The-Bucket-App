@@ -78,7 +78,7 @@ const TablePage = ({selectOps}) =>{
         }}
         else{
         try {
-             response = await axios.delete(`http://localhost:8000/account/${endPoint}`, {data: record.key})
+             response = await axios.delete(`http://localhost:8000/account/${endPoint}`)
 
         } catch (e){
             console.log(`error:${e}`)
